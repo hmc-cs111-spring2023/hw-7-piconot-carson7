@@ -18,11 +18,11 @@ to talk with about language design and implementation issues._
 
 ## Checklist
 
-- [ ] Design a new syntax for Picobot
-  - [ ] Describe your design in `design.md`
-  - [ ] Before you implement the syntax, write the "empty room" program in
+- [x] Design a new syntax for Picobot
+  - [x] Describe your design in `design.md`
+  - [x] Before you implement the syntax, write the "empty room" program in
         `example-ideal.txt`
-- [ ] Choose whether you will implement your syntax as an internal or external DSL,
+- [-] Choose whether you will implement your syntax as an internal or external DSL,
       then complete one of the following:
   - [ ] Implement your new syntax as an internal DSL
     - [ ] Add files, as needed, to implement your syntax
