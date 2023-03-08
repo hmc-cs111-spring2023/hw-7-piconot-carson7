@@ -1,2 +1,3 @@
-Move Up
-Search Down
+Fly North
+Fly West
+Search South
