@@ -8,10 +8,22 @@ import scala.collection.mutable.ListBuffer
 
 class Picodrone (val mazeFilename: String) extends App {
 
-    // the list of rules, which is built up as the Picobor program executes
+    def run = {
+        val maze = Maze(mazeFilename)
+        object bot extends Picobot(maze, rules.toList) with TextDisplay
+        bot.run()
+    }
+
     private val rules = ListBuffer.empty[Rule]
 
-    def fly (direction: MoveDirection) = println("flying")
+    private var currentState = 0
+
+    def MoveNorth (start: State, end: State) = new Rule(start, Surroundings(Open, Anything, Anything, Anything), North, end)
+
+    def fly (direction: MoveDirection) = 
+        direction match
+            case North => rules += MoveNorth(State(currentState.toString), State(currentState.toString))
+        
     
 
 }
