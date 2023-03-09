@@ -1,0 +1,3 @@
+Fly North
+Fly West
+Search South
