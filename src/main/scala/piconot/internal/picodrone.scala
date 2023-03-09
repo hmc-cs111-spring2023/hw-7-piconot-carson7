@@ -18,19 +18,47 @@ class Picodrone (val mazeFilename: String) extends App {
 
     private var currentState = 0
 
-    def MoveNorth (start: State, end: State) = new Rule(start, Surroundings(Open, Anything, Anything, Anything), North, end)
-    def MoveEast (start: State, end: State) = new Rule(start, Surroundings(Anything, Open, Anything, Anything), East, end)
-    def MoveSouth (start: State, end: State) = new Rule(start, Surroundings(Anything, Anything, Anything, Open), South, end)
-    def MoveWest (start: State, end: State) = new Rule(start, Surroundings(Anything, Anything, Open, Anything), West, end)
+    def MoveNorth (start: Int, end: Int) = new Rule(State(start.toString), Surroundings(Open, Anything, Anything, Anything), North, State(end.toString))
+    def MoveEast (start: Int, end: Int) = new Rule(State(start.toString), Surroundings(Anything, Open, Anything, Anything), East, State(end.toString))
+    def MoveSouth (start: Int, end: Int) = new Rule(State(start.toString), Surroundings(Anything, Anything, Anything, Open), South, State(end.toString))
+    def MoveWest (start: Int, end: Int) = new Rule(State(start.toString), Surroundings(Anything, Anything, Open, Anything), West, State(end.toString))
 
     def fly (direction: MoveDirection) = 
         direction match
-            case North => rules += MoveNorth(State(currentState.toString), State(currentState.toString))
-                rules += Rule(State(currentState.toString), Surroundings(Blocked, Anything, Anything, Anything), StayHere, State(currentState+1.toString))
-            case East => rules += MoveEast(State(currentState.toString), State(currentState.toString))
-            case South => rules += MoveSouth(State(currentState.toString), State(currentState.toString))
-            case West => rules += MoveWest(State(currentState.toString), State(currentState.toString))
-        currentState += 1
+            case North => rules += MoveNorth(currentState, currentState)
+                rules += Rule(State(currentState.toString), Surroundings(Blocked, Anything, Anything, Anything), StayHere, State((currentState+1).toString))
+            case East => rules += MoveEast(currentState, currentState)
+                rules += Rule(State(currentState.toString), Surroundings(Anything, Blocked, Anything, Anything), StayHere, State((currentState+1).toString))
+            case South => rules += MoveSouth(currentState, currentState)
+                rules += Rule(State(currentState.toString), Surroundings(Anything, Anything, Anything, Blocked), StayHere, State((currentState+1).toString))
+            case West => rules += MoveWest(currentState, currentState)
+                rules += Rule(State(currentState.toString), Surroundings(Anything, Anything, Blocked, Anything), StayHere, State((currentState+1).toString))
+            currentState += 1
+    
+    def search (direction: MoveDirection) =
+        direction match
+            case North => fly(West)
+                rules += MoveNorth(currentState, currentState+1)
+                currentState += 1
+                fly(East)
+                rules += MoveNorth(currentState, currentState-3)
+            case East => fly(North)
+                rules += MoveEast(currentState, currentState+1)
+                currentState += 1
+                fly(South)
+                rules += MoveEast(currentState, currentState-3)
+            case South => fly(East)
+                rules += MoveSouth(currentState, currentState+1)
+                currentState += 1
+                fly(West)
+                rules += MoveSouth(currentState, currentState-3)
+            case West => fly(South)
+                rules += MoveWest(currentState, currentState+1)
+                currentState += 1
+                fly(North)
+                rules += MoveWest(currentState, currentState-3)
+        
+    
         
     
 
